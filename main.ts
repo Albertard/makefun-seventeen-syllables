@@ -19,13 +19,16 @@ const TEXT =
 const outDir = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
 const outPath = join(outDir, "entry.txt");
 
-// The gate takes 1-200 Unicode code points, and not only white space.
-// Check the text before writing it: a file outside the gate never
-// reaches the judge, so fail loudly here instead.
+// The gate takes GATE_MIN-GATE_MAX Unicode code points, and not only
+// white space. Check the text before writing it: a file outside the gate
+// never reaches the judge, so fail loudly here instead.
+const GATE_MIN = 1;
+const GATE_MAX = 200;
+
 function checkFitsGate(candidate: string): void {
   const size = Array.from(candidate).length;
-  if (size < 1 || size > 200) {
-    throw new Error(`entry is ${size} characters, outside the 1-200 gate`);
+  if (size < GATE_MIN || size > GATE_MAX) {
+    throw new Error(`entry is ${size} characters, outside the ${GATE_MIN}-${GATE_MAX} gate`);
   }
   if (candidate.trim() === "") {
     throw new Error("entry holds only white space");
